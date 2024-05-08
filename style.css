@@ -73,3 +73,16 @@ body{
 .typing-text p span.active{
     color: orange;
 }
+
+.typing-text p span.correct{
+    color: green;
+}
+
+.typing-text p span.incorrect{
+    color: red;
+}
+
+::selection{
+    color: white;
+    background-color: orange;
+}
