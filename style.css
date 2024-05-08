@@ -63,8 +63,13 @@ body{
     font-size: 16px;
     border-radius: 6px;
     transition: transform 0.3s ease;
+    cursor: pointer;
 }
 
 .content button:active{
     transform: scale(0.97);
+}
+
+.typing-text p span.active{
+    color: orange;
 }
