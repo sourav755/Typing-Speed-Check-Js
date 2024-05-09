@@ -6,7 +6,7 @@ const wpm = document.querySelector(".wpm span b");
 const cpm = document.querySelector(".cpm span b");
 const btn = document.querySelector("button");
 
-let timer;
+let timer = null;
 let maxTime = 60;
 let timeLeft = maxTime;
 let charIndex = 0;
@@ -33,6 +33,10 @@ function loadParagraph() {
   }
 
   typingText.querySelectorAll("span")[0].classList.add("active");
+  document.addEventListener("keydown", () => input.focus());
+  typingText.addEventListener("click", () => {
+    input.focus();
+  });
 }
 
 function initTyping() {
@@ -40,6 +44,10 @@ function initTyping() {
   const typedChar = input.value.charAt(charIndex);
 
   if (charIndex < char.length && timeLeft > 0) {
+    if (!isTyping) {
+      timer = setInterval(initTime, 1000);
+      isTyping = true;
+    }
     if (char[charIndex].innerText === typedChar) {
       char[charIndex].classList.add("correct");
       console.log("correct");
@@ -49,9 +57,49 @@ function initTyping() {
       console.log("incorrect");
     }
     charIndex++;
+    char[charIndex].classList.add("active");
+
+    mistakes.innerText = mistake;
+    cpm.innerText = charIndex - mistake;
   } else {
+    clearInterval(timer);
+    timer = null;
+    isTyping = false;
+    input.value = "";
   }
 }
 
-loadParagraph();
+function initTime() {
+  if (timeLeft > 0) {
+    timeLeft--;
+    time.innerText = timeLeft;
+    let wpmVal = Math.round(
+      ((charIndex - mistake) / 5 / (maxTime - timeLeft)) * 60
+    );
+    wpm.innerText = wpmVal;
+  } else {
+    clearInterval(timer);
+    timer = null;
+  }
+}
+
+function reset() {
+  clearInterval(timer);
+  timer = null;
+  isTyping = false;
+
+  loadParagraph();
+  timeLeft = maxTime;
+  charIndex = 0;
+  mistake = 0;
+
+  wpm.innerText = 0;
+  cpm.innerText = 0;
+  mistakes.innerText = 0;
+  time.innerText = timeLeft;
+  input.value = "";
+}
+
 input.addEventListener("input", initTyping);
+btn.addEventListener("click", reset);
+loadParagraph();

@@ -86,3 +86,10 @@ body{
     color: white;
     background-color: orange;
 }
+
+.wrapper .input-field{
+    padding: 13px 20px 0;
+    position: absolute;
+    opacity: 0;
+    z-index: -99;
+}
